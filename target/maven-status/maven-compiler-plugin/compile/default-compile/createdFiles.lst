@@ -1,0 +1,9 @@
+Main\Program.class
+Optics\Optics.class
+InputOutput\Output.class
+Optics\Lens.class
+InputOutput\Input.class
+CalculationTesting\Calculator.class
+Main\Main.class
+CalculationTesting\Testing.class
+Optics\ToricLens.class
