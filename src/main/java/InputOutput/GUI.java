@@ -1,5 +1,6 @@
 package InputOutput;
 
+import Main.Main;
 import Main.Program;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -10,8 +11,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.util.ArrayList;
+
 public class GUI {
+    static GridPane outPane;
     GridPane pane;
+    ArrayList<TextField> textFieldsR;
+    ArrayList<TextField> textFieldsL;
+    Input inputR;
+    Input inputL;
 
     public void setUp() {
         Program.pane.setAlignment(Pos.CENTER);
@@ -99,7 +107,32 @@ public class GUI {
 
         Button submit = new Button("Calculate");
         submit.setOnAction(event -> {
+            textFieldsR = new ArrayList<>();
+            textFieldsL = new ArrayList<>();
 
+            inputR = new Input();
+            inputL = new Input();
+
+            textFieldsR.add(dTextFieldR);
+            textFieldsR.add(desPDTextFieldR);
+            textFieldsR.add(pDTextFieldR);
+            textFieldsR.add(desYTextFieldR);
+            textFieldsR.add(yTextFieldR);
+            textFieldsR.add(cylTextFieldR);
+            textFieldsR.add(aTextFieldR);
+
+            textFieldsL.add(dTextFieldL);
+            textFieldsL.add(desPDTextFieldL);
+            textFieldsL.add(pDTextFieldL);
+            textFieldsL.add(desYTextFieldL);
+            textFieldsL.add(yTextFieldL);
+            textFieldsL.add(cylTextFieldL);
+            textFieldsL.add(aTextFieldL);
+
+            inputR.input(textFieldsR);
+            inputL.input(textFieldsL);
+
+            Main.program.start(inputR, inputL);
         });
         HBox subHBox = new HBox();
         subHBox.getChildren().add(submit);
@@ -142,5 +175,27 @@ public class GUI {
         Program.pane.add(subHBox, 0, 2);
 
         Program.pane.add(pane, 0, 1);
+    }
+
+    static void output(ArrayList<String> text) {
+        Program.pane.getChildren().remove(outPane);
+        outPane = new GridPane();
+        outPane.setAlignment(Pos.CENTER);
+
+        int i = 0;
+        for (String s : text) {
+            Label label = new Label(s);
+            label.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+
+            HBox hBox = new HBox();
+            hBox.setAlignment(Pos.CENTER);
+            hBox.getChildren().add(label);
+
+            outPane.add(hBox, 0, i);
+
+            i++;
+        }
+
+        Program.pane.add(outPane, 0, 3);
     }
 }

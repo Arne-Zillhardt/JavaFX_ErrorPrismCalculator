@@ -29,17 +29,17 @@ public class Program extends Application{
     public static Stage stage;
     public static Scene scene;
 
-    void start() {
+    public void start(Input inputR, Input inputL) {
         output = new Output();
-        inputRight = new Input();
-        inputLeft = new Input();
+        inputRight = inputR;
+        inputLeft = inputL;
         calculator = new Calculator();
         testing = new Testing();
         lenses = new ArrayList<>();
         horTorLenses = new ArrayList<>();
         verTorLenses = new ArrayList<>();
 
-        output.prompt(inputRight, inputLeft);
+        //output.prompt(inputRight, inputLeft);
 
         if (inputRight.getInputs().size() == 5) {
             Lens right = new Lens(inputRight.getInputs());
@@ -92,7 +92,7 @@ public class Program extends Application{
     @Override
     public void start(Stage st) throws Exception {
         pane = new GridPane();
-        scene = new Scene(pane, 500, 300);
+        scene = new Scene(pane, 700, 400);
         stage = new Stage();
 
         gui = new GUI();

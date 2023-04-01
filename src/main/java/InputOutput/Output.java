@@ -54,10 +54,7 @@ public class Output {
     }
 
     public void result(ArrayList<Lens> lenses) {
-
-        for (int i = 0; i <= 5; i++) {
-            System.out.println();
-        }
+        ArrayList<String> out = new ArrayList<>();
 
         for (Lens lens : lenses) {
             String baseH;
@@ -74,8 +71,8 @@ public class Output {
                     baseV = "B.u.";
                 }
 
-                System.out.printf("A prism of %.2f %s pdpt occurs on the %s side horizontally\n", lens.getErrorPrismHorizontally(), baseH, side);
-                System.out.printf("A prism of %.2f %s pdpt occurs on the %s side vertically\n", lens.getErrorPrismHorizontally(), baseV, side);
+                out.add(String.format("A prism of %.2f %s pdpt occurs on the %s side horizontally\n", lens.getErrorPrismHorizontally(), baseH, side));
+                out.add(String.format("A prism of %.2f %s pdpt occurs on the %s side vertically\n", lens.getErrorPrismHorizontally(), baseV, side));
             } else {
                 if (((ToricLens) lens).getAxis() == 0) {
                     baseH = "B.a.";
@@ -83,37 +80,33 @@ public class Output {
                         baseH = "B.i.";
                     }
 
-                    System.out.printf("A prism of %.2f %s pdpt occurs on the %s side horizontally", lens.getErrorPrismHorizontally(), baseH, side);
+                    out.add(String.format("A prism of %.2f %s pdpt occurs on the %s side horizontally", lens.getErrorPrismHorizontally(), baseH, side));
                 } else {
                     baseV = "B.o.";
                     if (lens.getBaseVertically().equals(Optics.BU)) {
                         baseV = "B.u.";
                     }
 
-                    System.out.printf("A prism of %.2f %s pdpt occurs on the %s side vertically\n", lens.getErrorPrismHorizontally(), baseV, side);
+                    out.add(String.format("A prism of %.2f %s pdpt occurs on the %s side vertically\n", lens.getErrorPrismHorizontally(), baseV, side));
                 }
             }
-
-            System.out.println();
         }
-
-        System.out.println();
-
         String baseH = "B.a.";
         if (Lens.getOverallBaseHorizontally().equals(Optics.BI)) {
             baseH = "B.i.";
         }
 
-        System.out.printf("The overall horizontal prism is %.2f %s pdpt\n", Lens.getOverallErrorPrismHorizontally(), baseH);
-        System.out.printf("The overall vertical prism is %.2f pdpt\n", Lens.getOverallErrorPrismVertically());
-        System.out.println();
+        out.add(String.format("The overall horizontal prism is %.2f %s pdpt\n", Lens.getOverallErrorPrismHorizontally(), baseH));
+        out.add(String.format("The overall vertical prism is %.2f pdpt\n", Lens.getOverallErrorPrismVertically()));
 
         if (Lens.isValidation()) {
-            System.out.printf("You can give the customer the glasses, because overall horizontal prism is %.2f pdpt and the tolerance is %.2f pdpt\n", Lens.getOverallErrorPrismHorizontally(), Lens.getHorizontalTolerance());
+            out.add(String.format("You can give the customer the glasses, because overall horizontal prism is %.2f pdpt and the tolerance is %.2f pdpt\n", Lens.getOverallErrorPrismHorizontally(), Lens.getHorizontalTolerance()));
         } else {
-            System.out.printf("You can't give the customer the glasses, because overall horizontal prism is %.2f pdpt and the tolerance is %.2f pdpt\n", Lens.getOverallErrorPrismHorizontally(), Lens.getHorizontalTolerance());
+            out.add(String.format("You can't give the customer the glasses, because overall horizontal prism is %.2f pdpt and the tolerance is %.2f pdpt\n", Lens.getOverallErrorPrismHorizontally(), Lens.getHorizontalTolerance()));
         }
 
-        System.out.printf("Also the overall horizontal prism is %.2f pdpt and the tolerance is %.2f pdpt", Lens.getOverallErrorPrismVertically(), Lens.getVerticalTolerance());
+        out.add(String.format("Also the overall horizontal prism is %.2f pdpt and the tolerance is %.2f pdpt", Lens.getOverallErrorPrismVertically(), Lens.getVerticalTolerance()));
+
+        GUI.output(out);
     }
 }
