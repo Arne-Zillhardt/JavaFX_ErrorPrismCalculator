@@ -2,22 +2,32 @@ package Main;
 
 import CalculationTesting.Calculator;
 import CalculationTesting.Testing;
+import InputOutput.GUI;
 import InputOutput.Input;
 import InputOutput.Output;
 import Optics.Lens;
 import Optics.ToricLens;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class Program {
+public class Program extends Application{
     Output output;
     Input inputRight;
     Input inputLeft;
     Calculator calculator;
     Testing testing;
+    GUI gui;
     ArrayList<Lens> lenses;
     ArrayList<Lens> horTorLenses;
     ArrayList<Lens> verTorLenses;
+    public static GridPane pane;
+    public static Stage stage;
+    public static Scene scene;
 
     void start() {
         output = new Output();
@@ -61,28 +71,6 @@ public class Program {
             verTorLenses.add(lenses.get(lenses.size() - 1));
         }
 
-        /*if (inputRight.getInputs().size() == 5) {
-            lenses.add(new Lens(inputRight.getInputs()));
-            lenses.get(0).setSide("right");
-            lenses.add(new Lens(inputLeft.getInputs()));
-            lenses.get(1).setSide("left");
-        } else {
-            ToricLens right = new ToricLens(inputRight.getInputs());
-            ToricLens left = new ToricLens(inputLeft.getInputs());
-
-            lenses.add(calculator.power0Degrees(right));
-            lenses.get(0).setSide("right");
-            lenses.add(calculator.power90Degrees(right));
-            lenses.get(1).setSide("right");
-
-            lenses.add(calculator.power0Degrees(left));
-            lenses.get(2).setSide("left");
-            lenses.add(calculator.power90Degrees(left));
-            lenses.get(3).setSide("left");
-        }
-
-         */
-
         for (Lens lens : horTorLenses) {
             calculator.errorPrismHorizontally(lens);
         }
@@ -90,35 +78,8 @@ public class Program {
             calculator.errorPrismVertically(lens);
         }
 
-        /*for (Lens lens : lenses) {
-            if (lens.isToric()) {
-                if (((ToricLens) lens).getAxis() == 0) {
-                    calculator.errorPrismHorizontally(lens);
-                } else {
-                    calculator.errorPrismVertically(lens);
-                }
-            } else {
-                calculator.errorPrismHorizontally(lens);
-                calculator.errorPrismVertically(lens);
-            }
-        }
-
-         */
-
         calculator.overallErrorPrismHorizontally(horTorLenses.get(0), horTorLenses.get(1));
         calculator.overallErrorPrismVertically(verTorLenses.get(0), verTorLenses.get(1));
-
-        /*if (horTorLenses.size() != 0 && verTorLenses.size() != 0) {
-            calculator.overallErrorPrismHorizontally(horTorLenses.get(0), horTorLenses.get(1));
-            calculator.overallErrorPrismVertically(verTorLenses.get(0), verTorLenses.get(1));
-        } else {
-            calculator.overallErrorPrismHorizontally(lenses.get(0), lenses.get(1));
-            calculator.overallErrorPrismVertically(lenses.get(0), lenses.get(1));
-        }
-
-         */
-
-        //
 
         calculator.horizontalTolerance(lenses);
         calculator.verticalTolerance(lenses);
@@ -126,5 +87,18 @@ public class Program {
         testing.validation();
 
         output.result(lenses);
+    }
+
+    @Override
+    public void start(Stage st) throws Exception {
+        pane = new GridPane();
+        scene = new Scene(pane, 500, 300);
+        stage = new Stage();
+
+        gui = new GUI();
+        gui.setUp();
+
+        stage.setScene(scene);
+        stage.show();
     }
 }
